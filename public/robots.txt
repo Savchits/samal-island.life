@@ -1,0 +1,42 @@
+# Robots.txt for Samal IT-Bunker (https://samal-bunker.com)
+# Generative Engine Optimization (GEO) & SEO - All Search and AI crawlers welcome
+
+User-agent: *
+Allow: /
+
+# Explicit AI Search Engine & Assistant permissions
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# Sitemap & LLM index declaration
+Sitemap: https://samal-bunker.com/sitemap.xml

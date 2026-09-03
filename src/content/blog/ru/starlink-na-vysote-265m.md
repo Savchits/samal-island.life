@@ -1,0 +1,24 @@
+---
+title: "Starlink на высоте 265 метров над уровнем моря: тесты пинга и резервирования"
+description: "Полевые замеры двух антенн Starlink Gen 3 в Самал IT-Бункере: пинг 55–65 мс, скорость 350+ Мбит/с."
+translationKey: "starlink-na-vysote-265m"
+lang: "ru"
+pubDate: 2026-09-03
+updatedDate: 2026-09-03
+author:
+  name: "Кирилл Романов"
+  role: "Инфраструктурный архитектор Самал IT-Бункера"
+  avatar: "https://samal-bunker.com/img/author_romanov.webp"
+image:
+  url: "https://samal-bunker.com/img/hero_workspace.webp"
+  alt: "Starlink на высоте 265 метров над уровнем моря: тесты пинга и резервирования"
+tags: ["IT-Бункер","Starlink","Самал"]
+status: "published"
+level: "level1"
+schemaType: "Article"
+
+---
+
+# Starlink на высоте 265м
+
+Инфраструктура протестирована в условиях тропических гроз.

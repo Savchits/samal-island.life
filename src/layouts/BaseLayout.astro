@@ -1,0 +1,125 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  lang: string;
+  canonicalUrl: string;
+  alternates: Array<{ lang: string; href: string }>;
+  xDefault: string;
+  jsonLd?: any;
+}
+
+const { title, description, lang, canonicalUrl, alternates, xDefault, jsonLd } = Astro.props;
+
+const languageNames: Record<string, string> = {
+  ru: 'Русский',
+  en: 'English',
+  ko: '한국어',
+  zh: '中文',
+  kk: 'Қазақша',
+  tl: 'Tagalog',
+  ceb: 'Cebuano'
+};
+---
+
+<!DOCTYPE html>
+<html lang={lang} class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+
+  <!-- Automated Hreflang Tags generated from translationKey -->
+  {alternates.map(alt => (
+    <link rel="alternate" hreflang={alt.lang} href={alt.href} />
+  ))}
+  <link rel="alternate" hreflang="x-default" href={xDefault} />
+
+  <!-- Open Graph / Social Cards -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="https://samal-bunker.com/img/hero_workspace.webp" />
+  <meta property="og:locale" content={lang === 'ru' ? 'ru_RU' : 'en_US'} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content="https://samal-bunker.com/img/hero_workspace.webp" />
+
+  <!-- Fonts & Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" />
+  <link rel="stylesheet" href="/src/index.css" />
+  <meta name="theme-color" content="#06090e" />
+
+  <!-- Schema.org JSON-LD Structured Graph -->
+  {jsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
+  )}
+</head>
+<body class="bg-[#06090e] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-emerald-500 selection:text-slate-950">
+  
+  <!-- Global Top Bar with Language Switcher directly mapped to article alternates -->
+  <header class="border-b border-white/10 bg-[#06090e]/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href={`/${lang}/`} class="flex items-center gap-3 group">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-mono text-sm sm:text-base font-bold tracking-wider text-slate-200 group-hover:text-emerald-400 transition-colors">
+          SAMAL IT-BUNKER
+        </span>
+        <span class="hidden sm:inline-block px-2 py-0.5 text-xs font-mono rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          265m • TIER 3
+        </span>
+      </a>
+
+      <!-- Direct Language Alternate Switcher -->
+      <nav class="flex items-center gap-1.5 sm:gap-2">
+        <a href={`/${lang}/blog/`} class="text-xs sm:text-sm text-slate-400 hover:text-white px-2.5 py-1 rounded transition-colors mr-2">
+          {lang === 'ru' ? 'База знаний' : 'Knowledge Base'}
+        </a>
+        <div class="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg p-1">
+          {alternates.map(alt => (
+            <a
+              href={alt.href}
+              class={`px-2 py-0.5 text-xs font-mono rounded transition-all ${
+                alt.lang === lang
+                  ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+              }`}
+              title={languageNames[alt.lang] || alt.lang.toUpperCase()}
+            >
+              {alt.lang.toUpperCase()}
+            </a>
+          ))}
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <slot />
+  </main>
+
+  <footer class="border-t border-white/10 bg-[#04060a] py-12 text-slate-400 text-sm">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <p class="font-mono text-slate-300 font-semibold">Samal IT-Bunker (Samal View Resort)</p>
+        <p class="text-xs text-slate-500 mt-1">Sitio San Jose, Babak, Island Garden City of Samal, Davao del Norte 8119, Philippines</p>
+        <p class="text-xs text-slate-500">Elevation: 265m • Dual Starlink 350 Mbps • Solar 10kW • 0% Personal Tax Residency</p>
+      </div>
+      <div class="flex items-center gap-4 text-xs font-mono">
+        <a href="/sitemap.xml" class="text-slate-400 hover:text-emerald-400 underline">sitemap.xml</a>
+        <span class="text-slate-700">•</span>
+        <a href="/llms.txt" class="text-slate-400 hover:text-emerald-400 underline">llms.txt</a>
+        <span class="text-slate-700">•</span>
+        <a href="https://t.me/samal_it_bunker" target="_blank" class="text-slate-400 hover:text-emerald-400">Telegram</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

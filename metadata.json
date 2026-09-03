@@ -1,0 +1,6 @@
+{
+  "name": "Автономный IT-Бункер на Филиппинах",
+  "description": "Премиальный автономный IT-резорт и бункер на острове Самал (Филиппины): Starlink 24/7, 0% налогов, 3-летняя виза, панорамные номера и автономное питание.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

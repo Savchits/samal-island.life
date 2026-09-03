@@ -1,0 +1,64 @@
+name: Automated Multilingual SEO & GEO Pipeline
+
+on:
+  push:
+    paths:
+      - 'src/content/blog/ru/**.md'
+      - 'data/**.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  translate-and-validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install --legacy-peer-deps
+
+      - name: Run Automated Translation with Brand Glossary
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          npx tsx scripts/translate-article.ts --all
+
+      - name: Regenerate XML Sitemap with xhtml:link hreflangs
+        run: |
+          npx tsx scripts/build-sitemap.ts
+
+      - name: Update llms.txt with New Content & Data
+        run: |
+          npx tsx scripts/update-llms.ts
+
+      - name: Run SEO, GEO, and Schema Audit
+        run: |
+          npx tsx scripts/verify-seo-geo.ts
+
+      - name: Build Static Production Site
+        run: |
+          npm run build
+
+      - name: Commit Generated Translations and Artifacts
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/blog/ sitemap.xml llms.txt public/
+          if git diff --staged --quiet; then
+            echo "No new translations or file updates to commit."
+          else
+            git commit -m "chore(i18n): auto-generate translations, sitemap.xml, and llms.txt [skip ci]"
+            git push
+          fi

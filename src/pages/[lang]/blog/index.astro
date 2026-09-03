@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const languages = ['ru', 'en', 'ko', 'zh', 'kk', 'tl', 'ceb'];
+  return languages.map(lang => ({
+    params: { lang }
+  }));
+}
+
+const { lang } = Astro.params;
+const allPosts = await getCollection('blog', post => post.data.lang === lang);
+
+// Sort by date descending
+allPosts.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+
+const languages = ['ru', 'en', 'ko', 'zh', 'kk', 'tl', 'ceb'];
+const alternates = languages.map(l => ({
+  lang: l,
+  href: `https://samal-bunker.com/${l}/blog/`
+}));
+
+const title = lang === 'ru'
+  ? 'База знаний и инженерные гайды | Самал IT-Бункер'
+  : 'Engineering Knowledge Base & Legal Guides | Samal IT-Bunker';
+
+const description = lang === 'ru'
+  ? 'Технические замеры Starlink, правовые нормы 3-летней визы EO 86, оптимизация налогов 0% и инфраструктурная автономия Самал IT-Бункера.'
+  : 'Verified Starlink benchmarks, Philippine EO 86 nomad visa legal guide, 0% tax residency, and autonomous coliving infrastructure.';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  lang={lang}
+  canonicalUrl={`https://samal-bunker.com/${lang}/blog/`}
+  alternates={alternates}
+  xDefault="https://samal-bunker.com/en/blog/"
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <span class="px-3 py-1 text-xs font-mono rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">
+        {lang.toUpperCase()} • Content Collections
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold text-white mt-4 mb-4 tracking-tight">
+        {lang === 'ru' ? 'База знаний и аналитика' : 'Knowledge Base & Guides'}
+      </h1>
+      <p class="text-slate-400 text-sm sm:text-base">
+        {description}
+      </p>
+    </div>
+
+    {allPosts.length === 0 ? (
+      <div class="p-12 text-center rounded-xl bg-white/5 border border-white/10 text-slate-400">
+        <p>No articles published in this language yet. Run the translation pipeline to auto-generate.</p>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {allPosts.map(post => {
+          const cleanSlug = post.slug.includes('/') ? post.slug.split('/').pop() : post.slug;
+          return (
+            <a
+              href={`/${post.data.lang}/blog/${cleanSlug}/`}
+              class="group flex flex-col p-6 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 hover:border-emerald-500/30 transition-all shadow-lg"
+            >
+              <div class="aspect-video w-full rounded-xl overflow-hidden mb-5 border border-white/10 relative">
+                <img
+                  src={post.data.image.url}
+                  alt={post.data.image.alt}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded text-xs font-mono uppercase bg-black/70 backdrop-blur-md text-emerald-400 border border-emerald-500/30">
+                  {post.data.lang.toUpperCase()}
+                </span>
+              </div>
+
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-400 mb-2">
+                <span>{new Date(post.data.pubDate).toLocaleDateString()}</span>
+                <span>•</span>
+                <span class="text-slate-400">key: {post.data.translationKey}</span>
+              </div>
+
+              <h2 class="text-lg sm:text-xl font-bold text-white group-hover:text-emerald-400 transition-colors mb-3 leading-snug">
+                {post.data.title}
+              </h2>
+
+              <p class="text-xs sm:text-sm text-slate-400 line-clamp-3 mb-6 flex-1">
+                {post.data.description}
+              </p>
+
+              <div class="flex items-center justify-between text-xs pt-4 border-t border-white/10">
+                <span class="text-slate-300 font-medium">{post.data.author.name}</span>
+                <span class="text-emerald-400 font-mono flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  Read Article →
+                </span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    )}
+  </div>
+</BaseLayout>

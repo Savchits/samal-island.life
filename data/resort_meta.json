@@ -1,0 +1,40 @@
+{
+  "name": "Samal IT-Bunker (Samal View Resort)",
+  "alternateName": "Samal View Resort",
+  "domain": "samal-bunker.com",
+  "url": "https://samal-bunker.com/",
+  "phone": "+63-928-555-1204",
+  "email": "booking@samal-bunker.com",
+  "address": {
+    "streetAddress": "Sitio San Jose, Babak District",
+    "addressLocality": "Island Garden City of Samal",
+    "addressRegion": "Davao del Norte",
+    "postalCode": "8119",
+    "addressCountry": "PH"
+  },
+  "geo": {
+    "latitude": 7.0731,
+    "longitude": 125.7122,
+    "elevation": "265 m"
+  },
+  "aggregateRating": {
+    "ratingValue": "4.97",
+    "reviewCount": "28",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "social": {
+    "telegramChannel": "https://t.me/samal_it_bunker",
+    "telegramAdmin": "https://t.me/resort_concierge",
+    "whatsapp": "https://wa.me/639170000000"
+  },
+  "languages": [
+    { "code": "ru", "name": "Русский", "level": "level1", "default": true },
+    { "code": "en", "name": "English", "level": "level1" },
+    { "code": "ko", "name": "한국어", "level": "level2" },
+    { "code": "zh", "name": "中文", "level": "level2" },
+    { "code": "kk", "name": "Қазақша", "level": "level3" },
+    { "code": "tl", "name": "Tagalog", "level": "level3" },
+    { "code": "ceb", "name": "Cebuano", "level": "level3" }
+  ]
+}

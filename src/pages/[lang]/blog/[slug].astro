@@ -1,0 +1,212 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+
+  // Build a map of translationKey -> all language entries
+  const byKey = new Map<string, typeof allPosts>();
+  for (const post of allPosts) {
+    const key = post.data.translationKey;
+    if (!byKey.has(key)) byKey.set(key, []);
+    byKey.get(key)!.push(post);
+  }
+
+  return allPosts.map(post => {
+    // Determine language and clean slug
+    const lang = post.data.lang;
+    const cleanSlug = post.slug.includes('/') ? post.slug.split('/').pop() : post.slug;
+
+    // Get all alternate translations for this exact article
+    const alternates = (byKey.get(post.data.translationKey) || []).map(alt => {
+      const altSlug = alt.slug.includes('/') ? alt.slug.split('/').pop() : alt.slug;
+      return {
+        lang: alt.data.lang,
+        href: `https://samal-bunker.com/${alt.data.lang}/blog/${altSlug}/`
+      };
+    });
+
+    const enAlt = alternates.find(a => a.lang === 'en') || alternates[0];
+
+    return {
+      params: { lang, slug: cleanSlug },
+      props: { post, alternates, xDefault: enAlt.href }
+    };
+  });
+}
+
+const { post, alternates, xDefault } = Astro.props;
+const { Content } = await post.render();
+
+const canonicalUrl = `https://samal-bunker.com/${post.data.lang}/blog/${post.slug.split('/').pop()}/`;
+
+// Structured Schema.org Article / BlogPosting + FAQPage
+const articleSchema: any = {
+  "@context": "https://schema.org",
+  "@type": post.data.schemaType || "Article",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "image": [post.data.image.url],
+  "datePublished": new Date(post.data.pubDate).toISOString(),
+  "dateModified": new Date(post.data.updatedDate || post.data.pubDate).toISOString(),
+  "author": {
+    "@type": "Person",
+    "name": post.data.author.name,
+    "jobTitle": post.data.author.role
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Samal IT-Bunker",
+    "url": "https://samal-bunker.com/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://samal-bunker.com/img/hero_workspace.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonicalUrl
+  }
+};
+
+let jsonLdGraph: any = articleSchema;
+
+if (post.data.faqs && post.data.faqs.length > 0) {
+  const faqSchema = {
+    "@type": "FAQPage",
+    "mainEntity": post.data.faqs.map(f => ({
+      "@type": "Question",
+      "name": f.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.answer
+      }
+    }))
+  };
+
+  jsonLdGraph = {
+    "@context": "https://schema.org",
+    "@graph": [articleSchema, faqSchema]
+  };
+}
+---
+
+<BaseLayout
+  title={`${post.data.title} | Samal IT-Bunker`}
+  description={post.data.description}
+  lang={post.data.lang}
+  canonicalUrl={canonicalUrl}
+  alternates={alternates}
+  xDefault={xDefault}
+  jsonLd={jsonLdGraph}
+>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-2 text-xs font-mono text-slate-400 mb-8" aria-label="Breadcrumbs">
+      <a href={`/${post.data.lang}/`} class="hover:text-emerald-400">Home</a>
+      <span>/</span>
+      <a href={`/${post.data.lang}/blog/`} class="hover:text-emerald-400">Blog</a>
+      <span>/</span>
+      <span class="text-slate-300 truncate max-w-xs">{post.data.translationKey}</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="mb-10">
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <span class="px-2.5 py-0.5 rounded text-xs font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          {post.data.lang.toUpperCase()}
+        </span>
+        <span class="px-2.5 py-0.5 rounded text-xs font-mono bg-white/5 text-slate-400 border border-white/10">
+          key: {post.data.translationKey}
+        </span>
+        {post.data.status === 'review_pending' && (
+          <span class="px-2.5 py-0.5 rounded text-xs font-mono bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            Level 2: Queue for Native Verification
+          </span>
+        )}
+      </div>
+
+      <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+        {post.data.title}
+      </h1>
+
+      <p class="text-base sm:text-lg text-slate-300 mb-6 leading-relaxed">
+        {post.data.description}
+      </p>
+
+      <!-- Author Card & Date -->
+      <div class="flex items-center gap-4 py-4 border-y border-white/10 text-xs sm:text-sm text-slate-400">
+        <div class="w-10 h-10 rounded-full bg-slate-800 border border-white/20 flex items-center justify-center font-bold text-slate-200">
+          {post.data.author.name.charAt(0)}
+        </div>
+        <div>
+          <p class="text-white font-medium">{post.data.author.name}</p>
+          <p class="text-xs text-slate-400">{post.data.author.role} • Published {new Date(post.data.pubDate).toLocaleDateString()}</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Featured Image -->
+    {post.data.image && (
+      <figure class="mb-10 rounded-xl overflow-hidden border border-white/10">
+        <img
+          src={post.data.image.url}
+          alt={post.data.image.alt}
+          class="w-full h-auto max-h-[450px] object-cover"
+          loading="eager"
+        />
+        <figcaption class="p-3 bg-white/5 text-xs text-slate-400 text-center font-mono">
+          {post.data.image.alt}
+        </figcaption>
+      </figure>
+    )}
+
+    <!-- Markdown Content Body -->
+    <div class="prose prose-invert prose-slate max-w-none prose-headings:text-white prose-a:text-emerald-400 hover:prose-a:text-emerald-300 prose-code:text-emerald-300 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-white/10 leading-relaxed text-slate-200">
+      <Content />
+    </div>
+
+    <!-- FAQ Accordion Block (if present) -->
+    {post.data.faqs && post.data.faqs.length > 0 && (
+      <section class="mt-16 pt-8 border-t border-white/10">
+        <h2 class="text-xl sm:text-2xl font-bold text-white mb-6">
+          {post.data.lang === 'ru' ? 'Часто задаваемые вопросы (FAQ)' : 'Frequently Asked Questions'}
+        </h2>
+        <div class="space-y-4">
+          {post.data.faqs.map(faq => (
+            <div class="p-4 rounded-lg bg-white/5 border border-white/10">
+              <h3 class="font-semibold text-emerald-400 text-sm sm:text-base mb-2">
+                {faq.question}
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {faq.answer}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Translation Cluster & Hreflang status banner -->
+    <section class="mt-16 p-6 rounded-xl bg-white/[0.03] border border-white/10">
+      <h3 class="text-sm font-mono uppercase text-slate-400 tracking-wider mb-3">
+        Multilingual Hreflang Cluster ({post.data.translationKey})
+      </h3>
+      <p class="text-xs text-slate-400 mb-4">
+        All versions share the identical <code>translationKey</code> schema ID. Crawlers receive reciprocal <code>rel="alternate" hreflang</code> tags.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {alternates.map(alt => (
+          <a
+            href={alt.href}
+            class="flex items-center justify-between p-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono transition-colors"
+          >
+            <span class="text-emerald-400 font-bold uppercase">{alt.lang}</span>
+            <span class="text-slate-400 truncate max-w-[200px]">{alt.href}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </article>
+</BaseLayout>

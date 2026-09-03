@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bunker CMS // Админка Самал IT-Бункера</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            bunker: {
+              950: '#060910',
+              900: '#090d16',
+              850: '#0d1320',
+              800: '#141d2e',
+              700: '#1e2b42'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #060910;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #090d16;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #1e2b42;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #06b6d4;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#060910] text-slate-100 antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <!-- ==================== 1. LOGIN SCREEN ==================== -->
+  <div id="login-view" class="min-h-screen flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+    <!-- Background glow -->
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <div class="w-full max-w-md bg-[#090d16]/95 border border-cyan-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-cyan-950/40 relative z-10 backdrop-blur-2xl">
+      <!-- Shield / Logo -->
+      <div class="flex items-center justify-center mb-6">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-600/10 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-xl shadow-cyan-500/10">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+        </div>
+      </div>
+
+      <div class="text-center mb-6 space-y-1">
+        <h1 class="text-xl font-bold tracking-tight text-white flex items-center justify-center gap-2">
+          <span>SAMAL IT-BUNKER</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-500/40 text-cyan-300">CMS</span>
+        </h1>
+        <p class="text-xs text-slate-400">Вход в панель управления статьями и автогенерацией (ELI5 7 языков)</p>
+      </div>
+
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1.5">Логин администратора:</label>
+          <div class="relative">
+            <input 
+              type="text" 
+              id="login-username" 
+              required
+              autocomplete="username"
+              placeholder="one1ro" 
+              value="one1ro"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-white/10 focus:border-cyan-400 focus:outline-none text-sm text-white font-mono placeholder-slate-500 transition-colors"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+            <span>Пароль:</span>
+            <button type="button" id="toggle-pwd" class="text-[11px] text-cyan-400 hover:underline">Показать</button>
+          </label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="login-password" 
+              required
+              autocomplete="current-password"
+              placeholder="••••••••••••" 
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-white/10 focus:border-cyan-400 focus:outline-none text-sm text-white font-mono placeholder-slate-500 transition-colors"
+            >
+          </div>
+        </div>
+
+        <div id="login-error" class="hidden p-3 rounded-xl bg-red-950/40 border border-red-500/40 text-red-300 text-xs text-center font-medium"></div>
+
+        <button 
+          type="submit" 
+          id="login-submit-btn"
+          class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+        >
+          <span>Войти в систему</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </button>
+      </form>
+
+      <div class="mt-6 pt-5 border-t border-white/10 text-center">
+        <a href="/" class="text-xs text-slate-400 hover:text-cyan-400 transition-colors inline-flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          <span>Вернуться на главную страницу</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==================== 2. MAIN ADMIN DASHBOARD ==================== -->
+  <div id="admin-view" class="hidden min-h-screen flex flex-col">
+    
+    <!-- Top Header Bar -->
+    <header class="h-16 border-b border-cyan-500/20 bg-[#090d16]/95 backdrop-blur-xl px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 shadow-lg">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500/30 to-blue-600/20 border border-cyan-500/50 flex items-center justify-center text-cyan-400 shadow-md shadow-cyan-500/10">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold tracking-wider text-white text-sm font-mono">BUNKER CMS</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              ONLINE
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 hidden sm:block">Управление публикациями и пересказом для 5-летних на 7 языках</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs & User Control -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <div class="flex items-center bg-slate-900/90 border border-white/10 rounded-xl p-1 text-xs">
+          <button 
+            id="tab-btn-catalog" 
+            onclick="switchTab('catalog')" 
+            class="px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20 cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+            </svg>
+            <span>Все статьи</span>
+            <span id="badge-count" class="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-slate-950/40 text-slate-950 font-mono">3</span>
+          </button>
+
+          <button 
+            id="tab-btn-create" 
+            onclick="switchTab('create')" 
+            class="px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all text-slate-400 hover:text-white cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <span>+ Создать (AI 7 яз.)</span>
+          </button>
+        </div>
+
+        <a 
+          href="/" 
+          target="_blank" 
+          class="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-800/60 hover:bg-slate-700/60 border border-white/10 text-xs text-slate-300 hover:text-white transition-colors"
+          title="Открыть сайт в новой вкладке"
+        >
+          <span>На сайт</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+          </svg>
+        </a>
+
+        <!-- User profile badge & logout -->
+        <div class="flex items-center gap-2 pl-2 border-l border-white/10">
+          <div class="hidden sm:block text-right">
+            <div class="text-xs font-mono font-bold text-cyan-300">one1ro</div>
+            <div class="text-[10px] text-slate-400 font-mono">Super Admin</div>
+          </div>
+          <button 
+            onclick="handleLogout()" 
+            class="p-2 rounded-xl bg-red-950/30 hover:bg-red-900/40 border border-red-500/30 text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+            title="Выйти из админки"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Content Body -->
+    <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+      
+      <!-- ==================== TAB 1: CATALOG OF ALL ARTICLES ==================== -->
+      <section id="section-catalog" class="space-y-6">
+        <!-- Control Banner -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#090d16]/80 p-4 sm:p-5 rounded-2xl border border-white/10 shadow-lg">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <span>Каталог всех статей бункера</span>
+              <span class="text-xs font-mono px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30">7 языков</span>
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Редактируйте, удаляйте или добавляйте новые публикации с авто-синхронизацией Sitemap и LLMs.txt</p>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <button 
+              onclick="loadArticles()" 
+              class="px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-xs text-slate-300 hover:text-white flex items-center gap-1.5 transition-all cursor-pointer"
+            >
+              <svg id="refresh-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+              </svg>
+              <span>Обновить</span>
+            </button>
+            <button 
+              onclick="switchTab('create')" 
+              class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md shadow-cyan-500/20 transition-all cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              <span>Добавить статью</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Search & Filter bar -->
+        <div class="flex items-center gap-3">
+          <div class="relative flex-1">
+            <input 
+              type="text" 
+              id="article-search" 
+              oninput="filterArticles()" 
+              placeholder="Поиск по заголовку, тегу или слагу..." 
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/80 border border-white/10 focus:border-cyan-400 focus:outline-none text-xs text-white placeholder-slate-500 transition-colors"
+            >
+            <svg class="w-4 h-4 text-slate-500 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Articles Grid / List -->
+        <div id="articles-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Dynamically populated -->
+          <div class="p-8 text-center text-slate-500 text-xs col-span-full">Загрузка базы статей...</div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 2: CREATE NEW ARTICLE ==================== -->
+      <section id="section-create" class="hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- LEFT FORM: Russian input -->
+          <div class="lg:col-span-5 bg-[#090d16]/90 border border-white/10 rounded-2xl p-5 sm:p-6 space-y-4 shadow-xl">
+            
+            <div class="flex items-center justify-between pb-3 border-b border-white/10">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                <span>Создание статьи на русском</span>
+              </h3>
+              <span class="text-[11px] font-mono text-cyan-400">Шаг 1 из 2</span>
+            </div>
+
+            <!-- 1-Click Presets -->
+            <div class="p-3 rounded-xl bg-cyan-950/30 border border-cyan-500/20 space-y-2">
+              <span class="text-[11px] font-semibold text-cyan-300 flex items-center gap-1">
+                <span>⚡</span> Готовые темы для быстрой проверки (1 клик):
+              </span>
+              <div class="space-y-1.5">
+                <button 
+                  type="button" 
+                  onclick="applyPreset(0)" 
+                  class="w-full text-left p-2 rounded-lg bg-slate-900/60 hover:bg-cyan-950/50 border border-white/5 hover:border-cyan-500/30 text-xs text-slate-300 hover:text-cyan-200 transition-colors flex items-center justify-between cursor-pointer"
+                >
+                  <span class="truncate">1. Как работает космический интернет Starlink</span>
+                  <span class="text-cyan-400 text-[10px] shrink-0 font-mono">Выбрать →</span>
+                </button>
+                <button 
+                  type="button" 
+                  onclick="applyPreset(1)" 
+                  class="w-full text-left p-2 rounded-lg bg-slate-900/60 hover:bg-cyan-950/50 border border-white/5 hover:border-cyan-500/30 text-xs text-slate-300 hover:text-cyan-200 transition-colors flex items-center justify-between cursor-pointer"
+                >
+                  <span class="truncate">2. Почему номады не платят налоги на Филиппинах</span>
+                  <span class="text-cyan-400 text-[10px] shrink-0 font-mono">Выбрать →</span>
+                </button>
+                <button 
+                  type="button" 
+                  onclick="applyPreset(2)" 
+                  class="w-full text-left p-2 rounded-lg bg-slate-900/60 hover:bg-cyan-950/50 border border-white/5 hover:border-cyan-500/30 text-xs text-slate-300 hover:text-cyan-200 transition-colors flex items-center justify-between cursor-pointer"
+                >
+                  <span class="truncate">3. Почему в IT-бункере никогда не гаснет свет</span>
+                  <span class="text-cyan-400 text-[10px] shrink-0 font-mono">Выбрать →</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Title -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-300">Заголовок статьи (RU):</label>
+              <input 
+                type="text" 
+                id="create-title" 
+                placeholder="Например: Как ловить интернет из космоса прямо на острове" 
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-white/10 focus:border-cyan-400 focus:outline-none text-xs sm:text-sm text-white placeholder-slate-500 transition-colors"
+              >
+            </div>
+
+            <!-- Content -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-300 flex items-center justify-between">
+                <span>Текст или технические тезисы (RU):</span>
+                <span id="content-word-count" class="text-[10px] text-slate-500 font-mono">0 слов</span>
+              </label>
+              <textarea 
+                id="create-content" 
+                rows="8" 
+                placeholder="Вставьте исходный текст, технические подробности, инструкции или тезисы..." 
+                class="w-full p-3.5 rounded-xl bg-slate-900/80 border border-white/10 focus:border-cyan-400 focus:outline-none text-xs text-slate-200 placeholder-slate-500 font-mono resize-none transition-colors"
+                oninput="updateWordCount()"
+              ></textarea>
+            </div>
+
+            <!-- Author & Tags -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">Автор:</label>
+                <select id="create-author" class="w-full px-2.5 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                  <option value="Кирилл Романов">Кирилл Романов (Архитектор)</option>
+                  <option value="Дмитрий Назаров">Дмитрий Назаров (Юрист)</option>
+                  <option value="Алексей Соколов">Алексей Соколов (DevOps)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">Теги (через запятую):</label>
+                <input 
+                  type="text" 
+                  id="create-tags" 
+                  value="IT-Бункер, Starlink, Самал, ELI5" 
+                  class="w-full px-2.5 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs text-white focus:outline-none focus:border-cyan-400"
+                >
+              </div>
+            </div>
+
+            <!-- ELI5 banner -->
+            <div class="p-3 rounded-xl bg-amber-950/20 border border-amber-500/30 flex items-start gap-2.5 text-[11px] text-amber-200/90 leading-relaxed">
+              <span class="text-base leading-none">🧸</span>
+              <div>
+                <strong>Стиль для 5-летнего ребёнка (ELI5):</strong>
+                ИИ преобразует ваш сложный текст в добрый, образный и понятный рассказ на всех 7 языках одновременно («космические блюдца», «солнечные зайчики», «чемоданчик без налогов»).
+              </div>
+            </div>
+
+            <!-- Main Generation Button -->
+            <button 
+              type="button" 
+              id="generate-all-btn" 
+              onclick="handleGenerateAll()" 
+              class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 via-emerald-400 to-cyan-400 hover:from-cyan-400 hover:to-emerald-300 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/20 transition-all cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99]"
+            >
+              <svg id="generate-spinner" class="w-4 h-4 hidden animate-spin text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+              </svg>
+              <span id="generate-btn-text">🚀 Сгенерировать пересказ для 5-летних на всех 7 языках</span>
+            </button>
+
+            <div id="generate-log" class="hidden text-[11px] font-mono p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-cyan-300"></div>
+
+          </div>
+
+          <!-- RIGHT PREVIEW & MULTILINGUAL RESULT -->
+          <div class="lg:col-span-7 bg-[#090d16]/90 border border-white/10 rounded-2xl p-5 sm:p-6 flex flex-col gap-4 shadow-xl">
+            
+            <div class="flex items-center justify-between pb-3 border-b border-white/10">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>Результат адаптации (7 языковых версий)</span>
+              </h3>
+              <span class="text-[11px] text-slate-400 font-mono">Шаг 2: Проверка и сохранение</span>
+            </div>
+
+            <!-- Language Switcher Tabs -->
+            <div id="target-lang-tabs" class="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-white/10">
+              <button onclick="switchPreviewLang('ru')" class="lang-tab-btn active px-3 py-1.5 rounded-lg text-xs font-medium bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
+                <span>🇷🇺</span><span>Русский (ELI5)</span>
+              </button>
+              <button onclick="switchPreviewLang('en')" class="lang-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-white/5 text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
+                <span>🇬🇧</span><span>English (Kid)</span>
+              </button>
+              <button onclick="switchPreviewLang('ko')" class="lang-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-white/5 text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
+                <span>🇰🇷</span><span>한국어 (5세)</span>
+              </button>
+              <button onclick="switchPreviewLang('zh')" class="lang-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-white/5 text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
+                <span>🇨🇳</span><span>中文 (童话)</span>
+              </button>
+              <button onclick="switchPreviewLang('kk')" class="lang-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-white/5 text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
+                <span>🇰🇿</span><span>Қазақша (Бала)</span>
+              </button>
+              <button onclick="switchPreviewLang('tl')" class="lang-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-white/5 text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
+                <span>🇵🇭</span><span>Tagalog (Pambata)</span>
+              </button>
+              <button onclick="switchPreviewLang('ceb')" class="lang-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-white/5 text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
+                <span>🏝️</span><span>Bisaya (Sayon)</span>
+              </button>
+            </div>
+
+            <!-- Empty State / Placeholder -->
+            <div id="preview-empty" class="flex-1 min-h-[360px] rounded-xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center p-8 text-center text-slate-500 space-y-2">
+              <svg class="w-12 h-12 text-slate-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <h4 class="text-sm font-semibold text-slate-300">Здесь появится готовый детский пересказ на всех 7 языках</h4>
+              <p class="text-xs text-slate-500 max-w-sm">Заполните поля слева или нажмите готовый шаблон, затем кликните «Сгенерировать пересказ»</p>
+            </div>
+
+            <!-- Generated Content Viewer/Editor -->
+            <div id="preview-content-box" class="hidden flex-1 flex flex-col gap-3">
+              <div class="p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/30 flex items-center justify-between text-xs text-emerald-300">
+                <span class="flex items-center gap-1.5">
+                  <span>✓</span> Все 7 версий сгенерированы и автоматически сохранены в блог!
+                </span>
+                <span id="preview-active-lang-badge" class="font-mono px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500/40 text-emerald-300">RU</span>
+              </div>
+
+              <!-- Editable Title -->
+              <div class="space-y-1">
+                <label class="text-[11px] font-medium text-slate-400">Заголовок на выбранном языке:</label>
+                <input 
+                  type="text" 
+                  id="preview-lang-title" 
+                  class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs sm:text-sm font-bold text-white focus:outline-none focus:border-cyan-400"
+                >
+              </div>
+
+              <!-- Editable Description -->
+              <div class="space-y-1">
+                <label class="text-[11px] font-medium text-slate-400">Краткое описание (мета-тег description):</label>
+                <input 
+                  type="text" 
+                  id="preview-lang-desc" 
+                  class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-300 italic focus:outline-none focus:border-cyan-400"
+                >
+              </div>
+
+              <!-- Editable Body -->
+              <div class="space-y-1 flex-1 flex flex-col">
+                <label class="text-[11px] font-medium text-slate-400">Основной текст сказки / пересказа (Markdown):</label>
+                <textarea 
+                  id="preview-lang-body" 
+                  rows="10" 
+                  class="w-full flex-1 p-3.5 rounded-xl bg-black/30 border border-white/10 text-xs leading-relaxed text-slate-200 font-mono resize-none focus:outline-none focus:border-cyan-400"
+                ></textarea>
+              </div>
+
+              <!-- Action button to save changes -->
+              <div class="flex items-center justify-end gap-2 pt-2 border-t border-white/10">
+                <button 
+                  type="button" 
+                  onclick="handleSaveCurrentVariantEdits()" 
+                  class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                  </svg>
+                  <span>Сохранить правки статьи</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+
+  <!-- ==================== 3. EDIT ARTICLE MODAL ==================== -->
+  <div id="edit-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-[#090d16] border border-cyan-500/40 rounded-3xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+      
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-slate-900/60">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <span>✏️ Редактирование статьи:</span>
+            <span id="modal-edit-slug" class="font-mono text-cyan-400 text-sm"></span>
+          </h3>
+          <p class="text-xs text-slate-400">Внесите правки в текст и метаданные на любом из 7 языков</p>
+        </div>
+        <button onclick="closeEditModal()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto space-y-4 custom-scrollbar flex-1">
+        
+        <!-- Language tabs for modal -->
+        <div id="modal-lang-tabs" class="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-white/10">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-300">Заголовок статьи:</label>
+          <input type="text" id="modal-input-title" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 focus:border-cyan-400 text-sm text-white focus:outline-none">
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-300">Описание (Description):</label>
+          <input type="text" id="modal-input-desc" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 focus:border-cyan-400 text-xs text-slate-300 focus:outline-none">
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-300">Теги (через запятую):</label>
+          <input type="text" id="modal-input-tags" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-white/10 focus:border-cyan-400 text-xs text-slate-300 focus:outline-none">
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-300">Текст статьи (Markdown):</label>
+          <textarea id="modal-input-body" rows="12" class="w-full p-3.5 rounded-xl bg-black/40 border border-white/10 focus:border-cyan-400 text-xs text-slate-200 font-mono resize-none focus:outline-none"></textarea>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-white/10 flex items-center justify-between bg-slate-900/60">
+        <span id="modal-save-status" class="text-xs font-mono text-cyan-400"></span>
+        <div class="flex items-center gap-2">
+          <button onclick="closeEditModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 font-medium cursor-pointer">
+            Отмена
+          </button>
+          <button onclick="saveModalEdits()" class="px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs shadow-md shadow-cyan-500/20 cursor-pointer">
+            Сохранить изменения
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ==================== 4. DELETE CONFIRMATION MODAL ==================== -->
+  <div id="delete-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-[#090d16] border border-red-500/40 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="w-12 h-12 rounded-2xl bg-red-950/60 border border-red-500/40 text-red-400 flex items-center justify-center mx-auto">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+        </svg>
+      </div>
+
+      <div class="text-center space-y-1">
+        <h3 class="text-base font-bold text-white">Удалить статью навсегда?</h3>
+        <p class="text-xs text-slate-400" id="delete-modal-text">
+          Вы уверены, что хотите удалить статью? Это действие необратимо и удалит файлы на всех 7 языках из src/content/blog/
+        </p>
+      </div>
+
+      <div class="p-3 rounded-xl bg-red-950/20 border border-red-500/30 text-[11px] text-red-300 text-center font-mono" id="delete-modal-slug">
+        slug-name
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <button onclick="closeDeleteModal()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 cursor-pointer">
+          Отмена
+        </button>
+        <button id="confirm-delete-btn" onclick="executeDeleteArticle()" class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-lg shadow-red-600/30 cursor-pointer">
+          Да, удалить
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==================== JAVASCRIPT CMS LOGIC ==================== -->
+  <script>
+    // State
+    const AUTH_KEY = 'bunker_admin_session';
+    const VALID_USER = 'one1ro';
+    const VALID_PASS = 'qweasdzxcvB1!';
+    
+    let allArticles = [];
+    let currentVariants = [];
+    let activePreviewLang = 'ru';
+    let currentEditingArticle = null;
+    let currentEditingLang = 'ru';
+    let articleToDelete = null;
+
+    const PRESETS = [
+      {
+        title: "Как работает космический интернет Starlink на острове Самал",
+        content: `Резорт Samal IT-Bunker находится на высоте 265 метров над уровнем моря на тропическом острове Самал (Филиппины). 
+Здесь развернута полностью автономная интернет-инфраструктура. Она состоит из двух независимых спутниковых станций Starlink Gen 3, работающих в режиме агрегации трафика и балансировки нагрузки. 
+Сигнал поступает напрямую от созвездия низкоорбитальных спутников SpaceX. 
+В дополнение к спутникам установлен промышленный 5G/LTE-роутер Teltonika с двумя местными SIM-картами (Globe и Smart) для мгновенного резервирования в случае тропического шторма. 
+Задержка (ping) составляет всего 38–48 мс до Сингапура и Токио, а суммарная скорость достигает 280–350 Мбит/с. 
+Питание обеспечивается гибридной солнечной электростанцией 24 кВт с аккумуляторами LiFePO4, поэтому перебои городской электросети острова никак не влияют на работу резидентов.`
+      },
+      {
+        title: "Почему IT-номады не платят налоги с зарубежного дохода на Филиппинах",
+        content: `В Налоговом кодексе Филиппин (National Internal Revenue Code, NIRC) существует фундаментальная статья 23 (Section 23). 
+Согласно этой норме, нерезиденты-иностранцы (Non-Resident Aliens, NRA) облагаются подоходным налогом исключительно на доходы, полученные из источников внутри территории Филиппин. 
+Если вы являетесь IT-разработчиком, основателем стартапа или консультантом и получаете оплату от иностранных заказчиков на свои зарубежные банковские счета (US, EU, Wise, криптокошельки), ставка подоходного налога на Филиппинах составляет ровно 0%. 
+При этом в 2026 году действует президентский указ EO 86 и программа Nomad Visa, позволяющая легально проживать в стране до 3 лет без риска возникновения локального налогового резидентства.`
+      },
+      {
+        title: "Что такое Самал IT-Бункер и почему здесь никогда не гаснет свет",
+        content: `Самал IT-Бункер — это закрытая автономная резиденция для основателей IT-стартапов и senior-инженеров, расположенная на частной территории Samal View Resort. 
+В отличие от обычных отелей на Бали или в Таиланде, бункер спроектирован по стандарту Tier-3 для дата-центров. 
+На крыше установлена солнечная электростанция мощностью 24 кВт на базе инверторов Deye и батарей LiFePO4 емкостью 45 кВт·ч. 
+В случае длительной облачности автоматически запускается бесшумный дизель-генератор с запасом топлива на 14 суток непрерывной работы. 
+Переключение между источниками питания происходит за 10 миллисекунд через ИБП APC Smart-UPS, благодаря чему компьютеры, мониторы и роутеры резидентов не перезагружаются ни при каких обстоятельствах.`
+      }
+    ];
+
+    const TARGET_LANGS = [
+      { code: 'ru', name: 'Русский (ELI5)', flag: '🇷🇺' },
+      { code: 'en', name: 'English (Kid)', flag: '🇬🇧' },
+      { code: 'ko', name: '한국어 (5세)', flag: '🇰🇷' },
+      { code: 'zh', name: '中文 (童话)', flag: '🇨🇳' },
+      { code: 'kk', name: 'Қазақша (Бала)', flag: '🇰🇿' },
+      { code: 'tl', name: 'Tagalog (Pambata)', flag: '🇵🇭' },
+      { code: 'ceb', name: 'Bisaya (Sayon)', flag: '🏝️' }
+    ];
+
+    // ================= INITIALIZATION & AUTH =================
+    window.addEventListener('DOMContentLoaded', () => {
+      checkAuth();
+
+      // Password toggle
+      document.getElementById('toggle-pwd').addEventListener('click', () => {
+        const inp = document.getElementById('login-password');
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+      });
+
+      // Login form submit
+      document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const u = document.getElementById('login-username').value.trim();
+        const p = document.getElementById('login-password').value.trim();
+        const errBox = document.getElementById('login-error');
+
+        errBox.classList.add('hidden');
+
+        try {
+          const res = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: u, password: p })
+          });
+
+          const data = await res.json();
+          if (res.ok && data.success) {
+            localStorage.setItem(AUTH_KEY, JSON.stringify({ token: data.token, username: data.username }));
+            showAdmin();
+          } else {
+            errBox.textContent = data.error || 'Неверный логин или пароль';
+            errBox.classList.remove('hidden');
+          }
+        } catch (err) {
+          if (u === VALID_USER && p === VALID_PASS) {
+            // Client fallback if network issue
+            localStorage.setItem(AUTH_KEY, JSON.stringify({ token: 'fallback_token', username: VALID_USER }));
+            showAdmin();
+          } else {
+            errBox.textContent = 'Ошибка авторизации. Проверьте логин и пароль.';
+            errBox.classList.remove('hidden');
+          }
+        }
+      });
+    });
+
+    function checkAuth() {
+      const auth = localStorage.getItem(AUTH_KEY);
+      if (auth) {
+        showAdmin();
+      } else {
+        showLogin();
+      }
+    }
+
+    function showLogin() {
+      document.getElementById('login-view').classList.remove('hidden');
+      document.getElementById('admin-view').classList.add('hidden');
+    }
+
+    function showAdmin() {
+      document.getElementById('login-view').classList.add('hidden');
+      document.getElementById('admin-view').classList.remove('hidden');
+      loadArticles();
+    }
+
+    function handleLogout() {
+      localStorage.removeItem(AUTH_KEY);
+      showLogin();
+    }
+
+    // ================= TABS NAVIGATION =================
+    function switchTab(tab) {
+      const catBtn = document.getElementById('tab-btn-catalog');
+      const createBtn = document.getElementById('tab-btn-create');
+      const catSec = document.getElementById('section-catalog');
+      const createSec = document.getElementById('section-create');
+
+      if (tab === 'catalog') {
+        catBtn.className = "px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20 cursor-pointer";
+        createBtn.className = "px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all text-slate-400 hover:text-white cursor-pointer";
+        catSec.classList.remove('hidden');
+        createSec.classList.add('hidden');
+        loadArticles();
+      } else {
+        createBtn.className = "px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-bold transition-all bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20 cursor-pointer";
+        catBtn.className = "px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all text-slate-400 hover:text-white cursor-pointer";
+        createSec.classList.remove('hidden');
+        catSec.classList.add('hidden');
+      }
+    }
+
+    // ================= ARTICLES CATALOG & CRUD =================
+    async function loadArticles() {
+      const listEl = document.getElementById('articles-list');
+      const refreshIcon = document.getElementById('refresh-icon');
+      if (refreshIcon) refreshIcon.classList.add('animate-spin');
+
+      try {
+        const res = await fetch('/api/articles');
+        if (res.ok) {
+          const data = await res.json();
+          allArticles = data.articles || [];
+          document.getElementById('badge-count').textContent = allArticles.length;
+          renderArticles(allArticles);
+        }
+      } catch (e) {
+        console.error('Error fetching articles:', e);
+      } finally {
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+      }
+    }
+
+    function renderArticles(articles) {
+      const listEl = document.getElementById('articles-list');
+      if (!articles || articles.length === 0) {
+        listEl.innerHTML = `
+          <div class="p-12 text-center text-slate-500 text-xs col-span-full border border-white/5 rounded-2xl bg-[#090d16]/50">
+            Статей не найдено. Нажмите «+ Создать», чтобы добавить первую статью с автогенерацией на 7 языках!
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = articles.map(art => {
+        const langs = art.languages || ['ru'];
+        return `
+          <div class="p-5 rounded-2xl bg-[#090d16]/90 border border-white/10 hover:border-cyan-500/40 transition-all flex flex-col justify-between gap-4 group shadow-lg">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-[11px] text-slate-400">
+                <span class="font-mono text-cyan-400 font-semibold truncate max-w-[200px]" title="${art.translationKey}">
+                  #${art.translationKey}
+                </span>
+                <span class="text-slate-500 font-mono">${art.date || '2026-09-03'}</span>
+              </div>
+              <h3 class="text-sm font-bold text-white group-hover:text-cyan-200 transition-colors line-clamp-2">
+                ${art.title}
+              </h3>
+              ${art.description ? `<p class="text-xs text-slate-400 line-clamp-2">${art.description}</p>` : ''}
+            </div>
+
+            <div class="space-y-3 pt-3 border-t border-white/10">
+              <!-- Available languages tags -->
+              <div class="flex flex-wrap items-center gap-1">
+                ${langs.map(l => `<span class="px-1.5 py-0.5 rounded bg-cyan-950 border border-cyan-500/30 text-cyan-300 text-[10px] font-mono font-semibold">${l.toUpperCase()}</span>`).join('')}
+                <span class="text-[10px] text-emerald-400 font-mono ml-auto">✓ ${langs.length} яз.</span>
+              </div>
+
+              <!-- Action buttons -->
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <button 
+                  onclick="openEditModal('${art.translationKey}')" 
+                  class="py-2 px-3 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-500/30 text-cyan-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                  <span>Редактировать</span>
+                </button>
+
+                <button 
+                  onclick="openDeleteModal('${art.translationKey}', '${art.title.replace(/'/g, "\\'")}')" 
+                  class="py-2 px-3 rounded-xl bg-red-950/30 hover:bg-red-900/40 border border-red-500/30 text-red-400 hover:text-red-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                  <span>Удалить</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterArticles() {
+      const query = document.getElementById('article-search').value.toLowerCase();
+      const filtered = allArticles.filter(a => 
+        a.title.toLowerCase().includes(query) || 
+        a.translationKey.toLowerCase().includes(query) ||
+        (a.description && a.description.toLowerCase().includes(query))
+      );
+      renderArticles(filtered);
+    }
+
+    // ================= PRESETS =================
+    function applyPreset(idx) {
+      const p = PRESETS[idx];
+      if (p) {
+        document.getElementById('create-title').value = p.title;
+        document.getElementById('create-content').value = p.content;
+        updateWordCount();
+      }
+    }
+
+    function updateWordCount() {
+      const text = document.getElementById('create-content').value;
+      const words = text.split(/\s+/).filter(Boolean).length;
+      document.getElementById('content-word-count').textContent = `${words} слов`;
+    }
+
+    // ================= GENERATE ALL 7 LANGUAGES =================
+    async function handleGenerateAll() {
+      const title = document.getElementById('create-title').value.trim();
+      const content = document.getElementById('create-content').value.trim();
+      const author = document.getElementById('create-author').value;
+      const tags = document.getElementById('create-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+
+      if (!title || !content) {
+        alert('Пожалуйста, введите заголовок и текст статьи на русском языке!');
+        return;
+      }
+
+      const btn = document.getElementById('generate-all-btn');
+      const spinner = document.getElementById('generate-spinner');
+      const btnText = document.getElementById('generate-btn-text');
+      const logEl = document.getElementById('generate-log');
+
+      btn.disabled = true;
+      spinner.classList.remove('hidden');
+      btnText.textContent = 'ИИ генерирует адаптацию для 5-летних на всех 7 языках...';
+      logEl.classList.remove('hidden');
+      logEl.textContent = 'Запуск нейросети Gemini... Параллельный перевод и пересказ (RU, EN, KO, ZH, KK, TL, CEB)';
+
+      try {
+        const res = await fetch('/api/articles/generate-all', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title,
+            content,
+            authorName: author,
+            tags
+          })
+        });
+
+        if (!res.ok) throw new Error('Ошибка сервера: ' + res.status);
+        const data = await res.json();
+
+        if (data.variants && data.variants.length > 0) {
+          currentVariants = data.variants;
+          logEl.textContent = `Успешно! Сгенерировано ${data.variants.length} языковых версий. Файлы сохранены в блог.`;
+
+          document.getElementById('preview-empty').classList.add('hidden');
+          document.getElementById('preview-content-box').classList.remove('hidden');
+          
+          switchPreviewLang('ru');
+        }
+      } catch (err) {
+        console.error(err);
+        logEl.textContent = 'Ошибка генерации: ' + err.message;
+      } finally {
+        btn.disabled = false;
+        spinner.classList.add('hidden');
+        btnText.textContent = '🚀 Сгенерировать пересказ для 5-летних на всех 7 языках';
+      }
+    }
+
+    function switchPreviewLang(langCode) {
+      activePreviewLang = langCode;
+
+      // Update tab buttons style
+      const tabs = document.querySelectorAll('.lang-tab-btn');
+      tabs.forEach(t => {
+        t.className = "lang-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-white/5 text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap cursor-pointer";
+      });
+
+      const currentTab = Array.from(tabs).find(t => t.innerText.toLowerCase().includes(langCode) || (langCode === 'ru' && t.innerText.includes('Русский')));
+      if (currentTab) {
+        currentTab.className = "lang-tab-btn active px-3 py-1.5 rounded-lg text-xs font-medium bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 flex items-center gap-1.5 whitespace-nowrap cursor-pointer";
+      }
+
+      document.getElementById('preview-active-lang-badge').textContent = langCode.toUpperCase();
+
+      const variant = currentVariants.find(v => v.lang === langCode);
+      if (variant) {
+        document.getElementById('preview-lang-title').value = variant.title || '';
+        document.getElementById('preview-lang-desc').value = variant.description || '';
+        document.getElementById('preview-lang-body').value = variant.body || '';
+      }
+    }
+
+    async function handleSaveCurrentVariantEdits() {
+      const variant = currentVariants.find(v => v.lang === activePreviewLang);
+      if (!variant) return;
+
+      variant.title = document.getElementById('preview-lang-title').value;
+      variant.description = document.getElementById('preview-lang-desc').value;
+      variant.body = document.getElementById('preview-lang-body').value;
+
+      const slug = currentVariants[0]?.slug || variant.slug || document.getElementById('create-title').value.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40);
+
+      try {
+        const res = await fetch(`/api/articles/${slug}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            variants: {
+              [activePreviewLang]: {
+                title: variant.title,
+                description: variant.description,
+                body: variant.body,
+                faqs: variant.faqs || []
+              }
+            }
+          })
+        });
+
+        if (res.ok) {
+          alert(`Изменения для языка ${activePreviewLang.toUpperCase()} успешно сохранены в файл!`);
+        }
+      } catch (e) {
+        alert('Ошибка сохранения: ' + e.message);
+      }
+    }
+
+    // ================= EDIT MODAL =================
+    async function openEditModal(slug) {
+      document.getElementById('modal-edit-slug').textContent = slug;
+      document.getElementById('edit-modal').classList.remove('hidden');
+      document.getElementById('modal-save-status').textContent = 'Загрузка статьи...';
+
+      try {
+        const res = await fetch(`/api/articles/${slug}`);
+        if (res.ok) {
+          const data = await res.json();
+          currentEditingArticle = data;
+          
+          // Build language tabs
+          const langKeys = Object.keys(data.results || {});
+          const tabsContainer = document.getElementById('modal-lang-tabs');
+          
+          tabsContainer.innerHTML = TARGET_LANGS.map(tl => {
+            const hasLang = langKeys.includes(tl.code);
+            return `
+              <button 
+                onclick="switchModalLang('${tl.code}')" 
+                class="modal-lang-tab px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer ${tl.code === 'ru' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' : 'bg-slate-900 text-slate-400 hover:text-white border border-white/5'}"
+                id="modal-tab-${tl.code}"
+              >
+                <span>${tl.flag}</span>
+                <span>${tl.name}</span>
+                ${hasLang ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>' : '<span class="text-[9px] text-slate-500">+</span>'}
+              </button>
+            `;
+          }).join('');
+
+          switchModalLang(langKeys[0] || 'ru');
+          document.getElementById('modal-save-status').textContent = '';
+        }
+      } catch (err) {
+        document.getElementById('modal-save-status').textContent = 'Ошибка загрузки: ' + err.message;
+      }
+    }
+
+    function switchModalLang(lang) {
+      currentEditingLang = lang;
+
+      // Update active tab styles
+      document.querySelectorAll('.modal-lang-tab').forEach(t => {
+        t.className = "modal-lang-tab px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer bg-slate-900 text-slate-400 hover:text-white border border-white/5";
+      });
+      const activeBtn = document.getElementById(`modal-tab-${lang}`);
+      if (activeBtn) {
+        activeBtn.className = "modal-lang-tab px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm";
+      }
+
+      const langData = currentEditingArticle?.results?.[lang];
+      if (langData) {
+        document.getElementById('modal-input-title').value = langData.title || '';
+        document.getElementById('modal-input-desc').value = langData.description || '';
+        document.getElementById('modal-input-body').value = langData.body || '';
+      } else {
+        document.getElementById('modal-input-title').value = '';
+        document.getElementById('modal-input-desc').value = '';
+        document.getElementById('modal-input-body').value = '';
+      }
+    }
+
+    async function saveModalEdits() {
+      const slug = document.getElementById('modal-edit-slug').textContent;
+      const title = document.getElementById('modal-input-title').value;
+      const desc = document.getElementById('modal-input-desc').value;
+      const body = document.getElementById('modal-input-body').value;
+      const statusEl = document.getElementById('modal-save-status');
+
+      statusEl.textContent = 'Сохранение...';
+
+      try {
+        const res = await fetch(`/api/articles/${slug}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            variants: {
+              [currentEditingLang]: {
+                title,
+                description: desc,
+                body,
+                faqs: currentEditingArticle?.results?.[currentEditingLang]?.faqs || []
+              }
+            }
+          })
+        });
+
+        if (res.ok) {
+          statusEl.textContent = `✓ Успешно сохранено для языка ${currentEditingLang.toUpperCase()}!`;
+          setTimeout(() => {
+            closeEditModal();
+            loadArticles();
+          }, 1000);
+        } else {
+          statusEl.textContent = 'Ошибка сохранения на сервере';
+        }
+      } catch (e) {
+        statusEl.textContent = 'Ошибка: ' + e.message;
+      }
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-modal').classList.add('hidden');
+    }
+
+    // ================= DELETE MODAL =================
+    function openDeleteModal(slug, title) {
+      articleToDelete = slug;
+      document.getElementById('delete-modal-slug').textContent = slug;
+      document.getElementById('delete-modal-text').innerHTML = `Вы уверены, что хотите удалить статью <strong>«${title}»</strong>? Файлы будут удалены на всех 7 языках.`;
+      document.getElementById('delete-modal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('delete-modal').classList.add('hidden');
+      articleToDelete = null;
+    }
+
+    async function executeDeleteArticle() {
+      if (!articleToDelete) return;
+      const btn = document.getElementById('confirm-delete-btn');
+      btn.disabled = true;
+      btn.textContent = 'Удаление...';
+
+      try {
+        const res = await fetch(`/api/articles/${articleToDelete}`, {
+          method: 'DELETE'
+        });
+
+        if (res.ok) {
+          closeDeleteModal();
+          loadArticles();
+        } else {
+          alert('Не удалось удалить статью');
+        }
+      } catch (e) {
+        alert('Ошибка при удалении: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Да, удалить';
+      }
+    }
+  </script>
+</body>
+</html>

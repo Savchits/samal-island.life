@@ -1,0 +1,197 @@
+{
+  "updatedAt": "2026-09-03",
+  "currency": "USD",
+  "totalRoomsCount": 6,
+  "availableCount": 2,
+  "occupiedCount": 4,
+  "rooms": [
+    {
+      "id": "master-sky-suite",
+      "schemaId": "https://samal-bunker.com/#room-master-sky",
+      "name": "Master Sky Suite (VIP-2 Master Studio)",
+      "category": "Panoramic Oceanview Penthouse",
+      "areaSqm": 55,
+      "status": "available",
+      "pricePerNight": 65,
+      "pricePerMonth": 1950,
+      "bedType": "King-size King Koil Memory Foam",
+      "occupancy": 2,
+      "badge": "Available • Primary Ocean View",
+      "view": "180° panorama: Davao Gulf, Mt. Apo, jungle canopy",
+      "noiseLevel": "48 dB (full acoustic isolation)",
+      "workstation": {
+        "desk": "Motorized standing desk 180x80cm with memory presets",
+        "chair": "Herman Miller Embody",
+        "display": "4K 32\" LG UltraFine USB-C monitor",
+        "network": "Dedicated 1Gbps Ethernet + Dual Starlink Wi-Fi 6 (up to 350 Mbps)"
+      },
+      "amenities": [
+        "Floor-to-ceiling 3x3m frameless UV-filtered triple-pane glass",
+        "Daikin Inverter silent air conditioning",
+        "Ensuite bathroom with artesian spring tropical rainfall shower",
+        "Daily housekeeping and laundry included",
+        "Private balcony overlooking Davao Gulf and Mt. Apo"
+      ],
+      "images": [
+        "https://samal-bunker.com/img/hero_workspace.webp",
+        "https://samal-bunker.com/img/room1_master.webp"
+      ]
+    },
+    {
+      "id": "cyber-zen-studio",
+      "schemaId": "https://samal-bunker.com/#room-cyber-zen",
+      "name": "Cyber Zen Studio (VIP-1 Open-Air Deck)",
+      "category": "Japanese Minimalist Deck Suite",
+      "areaSqm": 45,
+      "status": "available",
+      "pricePerNight": 58,
+      "pricePerMonth": 1750,
+      "bedType": "Tatami platform with orthopedic mattress",
+      "occupancy": 2,
+      "badge": "Available • Private Cinema Deck",
+      "view": "Tropical relict garden and sunset sky",
+      "noiseLevel": "42 dB (palm breeze and cicadas)",
+      "workstation": {
+        "desk": "Solid oak desk 160x75cm with 100W USB-C PD charging",
+        "chair": "Steelcase Gesture ergonomic chair",
+        "display": "120\" 4K Laser Cinema Projector for night sessions",
+        "network": "Wi-Fi 6 Mesh + Cat6 Ethernet drop"
+      },
+      "amenities": [
+        "Private open-air timber deck with bamboo hammock",
+        "Full Gongfu tea ceremony set with artisanal farm teas",
+        "Sliding full-height glass partitions",
+        "HomeKit automated ambient warm lighting",
+        "Daily housekeeping and organic coffee bean service"
+      ],
+      "images": [
+        "https://samal-bunker.com/img/room2_zen.webp",
+        "https://samal-bunker.com/img/cyber_deck.webp"
+      ]
+    },
+    {
+      "id": "jungle-pod-alpha",
+      "schemaId": "https://samal-bunker.com/#room-jungle-alpha",
+      "name": "Jungle Pod Alpha",
+      "category": "Acoustic Deep-Focus Cocoon",
+      "areaSqm": 38,
+      "status": "occupied",
+      "occupiedUntil": "2026-11-01",
+      "pricePerNight": 53,
+      "pricePerMonth": 1600,
+      "bedType": "Queen-size orthopedic mattress",
+      "occupancy": 1,
+      "badge": "Occupied (until Nov 2026)",
+      "view": "Dense relict jungle canopy",
+      "noiseLevel": "50 dB sound isolation index",
+      "workstation": {
+        "desk": "Standing desk + Secretlab Titan Evo",
+        "chair": "Secretlab Titan Evo",
+        "display": "Dual 27\" monitors + Shure SM7B boom mic setup",
+        "network": "Dual Starlink Low Latency priority"
+      },
+      "amenities": [
+        "Acoustic felt wall dampeners for zero-echo audio calls",
+        "HEPA air filtration and ionization unit",
+        "Circadian rhythm focus & sleep lighting",
+        "Ensuite bathroom with hot rainfall shower"
+      ],
+      "images": [
+        "https://samal-bunker.com/img/room3_matrix.webp"
+      ]
+    },
+    {
+      "id": "jungle-pod-beta",
+      "schemaId": "https://samal-bunker.com/#room-jungle-beta",
+      "name": "Jungle Pod Beta",
+      "category": "Acoustic Deep-Focus Cocoon",
+      "areaSqm": 38,
+      "status": "occupied",
+      "occupiedUntil": "2026-08-31",
+      "pricePerNight": 53,
+      "pricePerMonth": 1600,
+      "bedType": "Queen-size orthopedic mattress",
+      "occupancy": 1,
+      "badge": "Occupied (until Aug 2026)",
+      "view": "Ocean glimpse through coconut palms",
+      "noiseLevel": "48 dB sound isolation index",
+      "workstation": {
+        "desk": "Motorized standing desk + Herman Miller Mirra 2",
+        "chair": "Herman Miller Mirra 2",
+        "display": "34\" Curved Ultrawide monitor",
+        "network": "Dual Starlink + 5G backup"
+      },
+      "amenities": [
+        "Panoramic bay window workstation",
+        "Individual DeLonghi espresso machine with Mt. Apo beans",
+        "Fast Wi-Fi 6 and Cat6 drop",
+        "Daily housekeeping"
+      ],
+      "images": [
+        "https://samal-bunker.com/img/room3_matrix.webp"
+      ]
+    },
+    {
+      "id": "executive-founders-suite-1",
+      "schemaId": "https://samal-bunker.com/#room-founders-1",
+      "name": "Executive Founders Suite 1",
+      "category": "Co-Founders Duplex Suite",
+      "areaSqm": 65,
+      "status": "occupied",
+      "occupiedUntil": "2026-12-15",
+      "pricePerNight": 80,
+      "pricePerMonth": 2400,
+      "bedType": "Super King-size luxury bed",
+      "occupancy": 2,
+      "badge": "Occupied (until Dec 2026)",
+      "view": "Panoramic Davao Gulf oceanfront and infinity pool",
+      "noiseLevel": "48 dB sound isolation",
+      "workstation": {
+        "desk": "Two independent Herman Miller motorized desks",
+        "chair": "2x Herman Miller Aeron Chairs",
+        "display": "2x 4K 32\" displays",
+        "network": "Dedicated VLAN with Dual Starlink priority bonding"
+      },
+      "amenities": [
+        "Dual workstations for co-founders or couples",
+        "Private lounge salon and meeting area",
+        "Large marble bathroom with dual rain showers",
+        "Private terrace overlooking infinity pool"
+      ],
+      "images": [
+        "https://samal-bunker.com/img/room1_master.webp"
+      ]
+    },
+    {
+      "id": "executive-founders-suite-2",
+      "schemaId": "https://samal-bunker.com/#room-founders-2",
+      "name": "Executive Founders Suite 2",
+      "category": "Co-Founders Duplex Suite",
+      "areaSqm": 65,
+      "status": "occupied",
+      "occupiedUntil": "2027-01-31",
+      "pricePerNight": 80,
+      "pricePerMonth": 2400,
+      "bedType": "Super King-size luxury bed",
+      "occupancy": 2,
+      "badge": "Occupied (until Jan 2027)",
+      "view": "Panoramic Davao Gulf oceanfront and infinity pool",
+      "noiseLevel": "48 dB sound isolation",
+      "workstation": {
+        "desk": "Two independent motorized desks",
+        "chair": "2x Steelcase Leap V2 Chairs",
+        "display": "2x 4K 32\" displays",
+        "network": "Dedicated VLAN with Dual Starlink priority bonding"
+      },
+      "amenities": [
+        "Dual workstations for co-founders",
+        "Private terrace lounge",
+        "Daikin Inverter climate control",
+        "VIP concierge & chauffeur on call"
+      ],
+      "images": [
+        "https://samal-bunker.com/img/room1_master.webp"
+      ]
+    }
+  ]
+}

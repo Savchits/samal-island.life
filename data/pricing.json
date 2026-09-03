@@ -1,0 +1,68 @@
+{
+  "updatedAt": "2026-09-03",
+  "currency": "USD",
+  "priceRange": {
+    "nightly": {
+      "min": 45,
+      "max": 80,
+      "display": "$45 - $80 USD/night"
+    },
+    "monthly": {
+      "min": 750,
+      "max": 2400,
+      "display": "$750 - $2400 USD/month"
+    }
+  },
+  "plans": [
+    {
+      "id": "all-inclusive-monthly",
+      "name": "All-Inclusive Coliving & Work Residency",
+      "billingCycle": "monthly",
+      "priceRange": "$1,600 - $2,400 USD/month",
+      "deposit": "1 month security deposit (100% refundable)",
+      "commitment": "Minimum 1 month, 3-36 months recommended",
+      "inclusions": [
+        "Private panoramic suite or jungle pod",
+        "Dedicated ergonomic workstation (Herman Miller / Steelcase)",
+        "Uncapped Dual Starlink Gen 3 Satellite Internet (up to 350 Mbps)",
+        "100% autonomous power: 10kW solar + 15kWh LiFePO4 + diesel standby",
+        "18,000L purified spring water supply",
+        "All electricity, Daikin A/C, and high-speed utilities included",
+        "Daily housekeeping & fresh linen service",
+        "Complimentary laundry service (3x per week)",
+        "Mt. Apo specialty coffee & artisan tea bar (unlimited)",
+        "20m oceanview infinity pool, Finnish sauna, cold plunge & gym access",
+        "Davao International Airport VIP chauffeur pickup and private boat transfer",
+        "Full legal onboarding: 36-month digital nomad visa (EO 86) & 0% tax residency"
+      ]
+    },
+    {
+      "id": "trial-pass-nightly",
+      "name": "7-14 Day Deep Focus Workation Pass",
+      "billingCycle": "nightly",
+      "priceRange": "$45 - $80 USD/night",
+      "deposit": "None",
+      "commitment": "7-night minimum stay",
+      "inclusions": [
+        "Private suite access with dedicated desk & monitor",
+        "Dual Starlink high-speed connectivity",
+        "All resort facilities (pool, gym, sauna, coffee bar)",
+        "Airport transfer included for stays > 10 nights"
+      ]
+    },
+    {
+      "id": "annual-residency-lock",
+      "name": "12-Month Founder Residency (Locked Rate)",
+      "billingCycle": "annually / monthly locked",
+      "priceRange": "$1,450 - $2,100 USD/month (15% discount)",
+      "deposit": "1 month deposit",
+      "commitment": "12 months guaranteed fixed rate",
+      "inclusions": [
+        "Guaranteed priority room lock without seasonal price fluctuations",
+        "Complimentary Philippine TIN & BIR Tax Residency Certificate assistance",
+        "Dedicated gigabit VLAN router port",
+        "Family / co-founder guest passes (14 days/year)"
+      ]
+    }
+  ]
+}

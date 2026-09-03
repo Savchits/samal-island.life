@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { loadData, generateUnifiedJsonLd } from '../../../scripts/sync-data.ts';
+
+export async function getStaticPaths() {
+  const languages = ['ru', 'en', 'ko', 'zh', 'kk', 'tl', 'ceb'];
+  return languages.map(lang => ({
+    params: { lang }
+  }));
+}
+
+const { lang } = Astro.params;
+const { rooms, pricing, meta } = loadData();
+const jsonLd = generateUnifiedJsonLd();
+
+const languages = ['ru', 'en', 'ko', 'zh', 'kk', 'tl', 'ceb'];
+const alternates = languages.map(l => ({
+  lang: l,
+  href: l === 'en' ? 'https://samal-bunker.com/' : `https://samal-bunker.com/${l}/`
+}));
+
+const title = lang === 'ru'
+  ? 'Самал IT-Бункер — Автономный IT-резорт и коворкинг для фаундеров'
+  : 'Samal IT-Bunker — Autonomous Coliving & Work Haven for Digital Nomads';
+
+const description = lang === 'ru'
+  ? '3 года легальной визы без выезда (EO 86), 0% налога на международный доход, Dual Starlink до 350 Мбит/с, 10кВт солнечной автономии. Остров Самал, Филиппины.'
+  : '3-year legal residency, 0% tax on foreign income, zero downtime power and Starlink up to 350 Mbps, and an exclusive 6-person sanctuary. Samal Island, Philippines.';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  lang={lang}
+  canonicalUrl={lang === 'en' ? 'https://samal-bunker.com/' : `https://samal-bunker.com/${lang}/`}
+  alternates={alternates}
+  xDefault="https://samal-bunker.com/"
+  jsonLd={jsonLd}
+>
+  <!-- Hero Section -->
+  <section class="relative py-20 overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#0a0f18] to-[#06090e]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono mb-6">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        {lang === 'ru' ? '265м НАД УРОВНЕМ МОРЯ • ОСТРОВ САМАЛ' : 'ELEVATION 265M • SAMAL ISLAND, PHILIPPINES'}
+      </div>
+
+      <h1 class="text-3xl sm:text-6xl font-black text-white tracking-tight mb-6 max-w-4xl leading-tight">
+        {lang === 'ru' ? (
+          <>Приезжай с чемоданом. <span class="text-emerald-400">Пиши код через час.</span></>
+        ) : (
+          <>Arrive with a Suitcase. <span class="text-emerald-400">Start Coding in 1 Hour.</span></>
+        )}
+      </h1>
+
+      <p class="text-base sm:text-xl text-slate-300 max-w-2xl mb-8 leading-relaxed">
+        {description}
+      </p>
+
+      <!-- Direct Answer Box (GEO / AI Optimization) -->
+      <div class="p-4 rounded-xl bg-white/[0.03] border border-emerald-500/30 max-w-3xl mb-8 text-xs sm:text-sm text-slate-300 leading-relaxed font-mono">
+        <strong class="text-emerald-400">DIRECT SPECIFICATION:</strong> Samal IT-Bunker provides 6 exclusive suites (elevation 265m), dual bonded Starlink terminals (350+ Mbps), 10kW solar array with 15kWh LiFePO4 batteries, and on-site legal processing for Philippine 36-month digital nomad residency under EO 86 with 0% personal tax on overseas earnings.
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href="#rooms"
+          class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-[0_0_25px_rgba(16,185,129,0.3)]"
+        >
+          {lang === 'ru' ? 'Выбрать номер (2 свободных)' : 'View Available Suites (2 Free)'}
+        </a>
+        <a
+          href={`/${lang}/blog/`}
+          class="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 font-semibold text-sm transition-all"
+        >
+          {lang === 'ru' ? 'База знаний и гайды →' : 'Knowledge Base & Guides →'}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Suites Section generated directly from data/rooms.json (Single Source of Truth) -->
+  <section id="rooms" class="py-20 max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+      <div>
+        <span class="text-xs font-mono uppercase tracking-wider text-emerald-400">SINGLE SOURCE OF TRUTH (data/rooms.json)</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-2">
+          {lang === 'ru' ? 'Номера и эргономичные рабочие места' : 'Suites & Dedicated Workstations'}
+        </h2>
+      </div>
+      <p class="text-slate-400 text-xs sm:text-sm font-mono mt-2 md:mt-0">
+        Total: {rooms.length} suites • Available: {rooms.filter(r => r.status === 'available').length}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {rooms.map(room => (
+        <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-white/20 transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class={`px-3 py-1 text-xs font-mono rounded-full ${
+                room.status === 'available'
+                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                  : 'bg-slate-800 text-slate-400 border border-white/10'
+              }`}>
+                {room.badge}
+              </span>
+              <span class="text-xl font-bold font-mono text-white">
+                ${room.pricePerMonth}<span class="text-xs text-slate-400 font-normal">/mo</span>
+              </span>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-2">{room.name}</h3>
+            <p class="text-xs text-slate-400 font-mono mb-4">{room.category} • {room.areaSqm} m² • {room.bedType}</p>
+
+            <div class="p-3 rounded-lg bg-black/40 border border-white/5 space-y-1.5 text-xs text-slate-300 font-mono mb-6">
+              <div><strong class="text-slate-400">Desk:</strong> {room.workstation.desk}</div>
+              <div><strong class="text-slate-400">Chair:</strong> {room.workstation.chair}</div>
+              <div><strong class="text-slate-400">Display:</strong> {room.workstation.display}</div>
+              <div><strong class="text-slate-400">Network:</strong> {room.workstation.network}</div>
+            </div>
+
+            <ul class="space-y-1 text-xs text-slate-400 mb-6">
+              {room.amenities.map(a => (
+                <li class="flex items-center gap-2">
+                  <span class="text-emerald-400">✓</span> {a}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <a
+            href="https://t.me/resort_concierge"
+            target="_blank"
+            class={`w-full py-2.5 rounded-lg text-center font-bold text-xs tracking-wider uppercase transition-all ${
+              room.status === 'available'
+                ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-md'
+                : 'bg-white/5 text-slate-500 cursor-not-allowed'
+            }`}
+          >
+            {room.status === 'available' ? 'Забронировать в Telegram' : 'В листе ожидания'}
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
