@@ -1,41 +1,28 @@
 ---
 title: "Starlink at 265m Elevation: Real-World Latency & Failover Benchmarks"
-description: "Реальные полевые замеры двух антенн Starlink Gen 3 в Samal IT-Bunker: пинг 55–65 мс до Сингапура, скорость 350+ Мбит/с, нулевой джиттер и горячее резервирование через 5G-шлюз."
-translationKey: "starlink-na-vysote-265m"
-lang: "en"
-pubDate: "2026-08-20"
-updatedDate: "2026-09-03"
-author: ""
-name: "Кирилл Романов"
-role: "Инфраструктурный архитектор Самал IT-Бункера"
-avatar: "https://samal-bunker.com/img/author_romanov.webp"
+description: "Полевые замеры двух антенн Starlink Gen 3 в Samal IT-Bunker: пинг
+  55–65 мс, скорость 350+ Мбит/с."
+translationKey: starlink-na-vysote-265m
+lang: en
+pubDate: 2026-09-03
+updatedDate: 2026-09-03
+author:
+  name: Кирилл Романов
+  role: Инфраструктурный архитектор Самал IT-Бункера
+  avatar: https://samal-bunker.com/img/author_romanov.webp
 image:
-  url: "https://samal-bunker.com/img/hero_workspace.webp"
-  alt: "Samal IT-Bunker"
-url: "https://samal-bunker.com/img/cyber_deck.webp"
-alt: "Антенный комплекс Starlink и панорама океана"
-tags: ["Starlink", "Инфраструктура", "Сеть", "DevOps"]
-status: "published"
-level: "level1"
-schemaType: "Article"
-faqs:
-  - question: "Каков реальный пинг из Бункера до серверов в Азии и Европе?"
-    answer: "Пинг до шлюза в Сингапуре составляет 52–62 мс, до Франкфурта — 150–165 мс, до Токио — 68–78 мс. Это позволяет комфортно вести парное программирование и играть в соревновательные игры."
-  - question: "Что происходит при сильном тропическом ливне?"
-    answer: "Две разнесенные антенны Starlink Gen 3 работают в режиме агрегации. При затухании сигнала на одной антенна плавно балансирует трафик. В крайнем случае за 10 мс подключается направленный 5G-шлюз."
+  url: https://samal-bunker.com/img/hero_workspace.webp
+  alt: "Starlink на высоте 265 метров над уровнем моря: тесты пинга и
+    резервирования"
+tags:
+  - IT-Бункер
+  - Starlink
+  - Самал
+status: published
+level: level1
+schemaType: Article
 ---
 
-# Starlink на высоте 265 метров над уровнем моря: тесты пинга и резервирования
+# Starlink на высоте 265м
 
-Для Senior DevOps и ML-инженеров стабильность интернет-канала — это вопрос выживания проекта. В Samal IT-Bunkerе мы развернули инфраструктуру уровня Tier 3, протестированную в условиях реальных тропических гроз.
-
-## Архитектура подключения
-- **2 независимые тарелки Starlink Gen 3** с питанием от бесперебойного инвертора 48V.
-- **Маршрутизатор Ubiquiti UniFi Dream Machine Pro** с автоматической балансировкой нагрузки.
-- **Резервный промышленный 5G-шлюз Teltonika** с направленной антенной на вышку в Бабаке.
-- **Ethernet Cat6 к каждому рабочему столу** + Wi-Fi 6 Mesh по всей территории.
-
-## Замеры производительности
-- Входящая скорость: 280–360 Мбит/с.
-- Исходящая скорость: 35–55 Мбит/с.
-- Packet Loss за 30 дней: 0.004%.
+Инфраструктура протестирована в условиях тропических гроз.

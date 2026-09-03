@@ -1,7 +1,7 @@
 ---
-title: Giunsa nato pagdawat ang magic internet gikan sa mga bituon sa Samal!
-description: Tan-awa kon giunsa nato pagkuha ang kusog kaayo nga internet gikan
-  sa kawanangan samtang anaa kita sa usa ka nindot nga isla.
+title: Как интернет прилетает к нам прямо из космоса!
+description: Узнай, как в волшебном домике на острове ловят невидимые лучики
+  интернета, чтобы смотреть мультики и играть.
 translationKey: kak-lovit-internet-iz-kosmosa-pryamo-na-tropichesk
 lang: ceb
 pubDate: 2026-09-03
@@ -12,35 +12,34 @@ author:
   avatar: https://samal-bunker.com/img/author_romanov.webp
 image:
   url: https://samal-bunker.com/img/hero_workspace.webp
-  alt: Giunsa nato pagdawat ang magic internet gikan sa mga bituon sa Samal! -
-    Samal IT-Bunker
+  alt: Как интернет прилетает к нам прямо из космоса! - Samal IT-Bunker
 tags:
-  - internet
-  - Samal
-  - Davao
-  - Starlink
-  - siyensya
-status: published
+  - космос
+  - интернет
+  - технологии
+  - приключения
+  - Самал
+status: draft
 level: level3
 schemaType: Article
 faqs:
-  - question: Giunsa pag-abot sa internet sa Samal IT-Bunker?
-    answer: Ang atong Starlink nagdawat og signal gikan sa mga satellite nga
-      naglutaw sa kawanangan, sama sa pagdawat og mensahe gikan sa usa ka higala
-      sa laing planeta!
-  - question: Nganong solar panels man ang gigamit?
-    answer: Tungod kay ang adlaw naghatag kanato og libre ug limpyo nga enerhiya,
-      sama sa pagkaon nga makahatag kanato og kusog para makadagan ug makaduwa!
+  - question: Откуда берется интернет в таком секретном месте?
+    answer: Интернет прилетает прямо из космоса! Антенны Starlink ловят его, как
+      сачком, из самых далеких уголков неба.
+  - question: Почему антенны не разряжаются?
+    answer: Потому что они дружат с солнышком! Солнечные батареи собирают солнечный
+      свет и превращают его в еду — то есть в энергию — для наших космических
+      тарелок.
 ---
 
-## Ang mahika sa Samal IT-Bunker
-Handurawa ang usa ka super-cozy nga balay sa ibabaw sa bukid nga gitawag nato og Samal IT-Bunker. Kini dili ordinaryo nga balay, kay duna kini mga 'magic antennas' nga gitawag og Starlink. Imbes nga mopalit og kable sa tindahan, kining mga tawhana nagkuha og internet diretso gikan sa mga bituon sa kawanangan!
+## Волшебный домик на горе
+Представь, что высоко-высоко на красивом тропическом острове Давао стоит уютный супер-домик, который называется Samal IT-Bunker. Это не просто дом, а настоящий центр чудес, где люди придумывают что-то интересное, даже когда вокруг шумят пальмы!
 
-## Unsaon pagdawat ang signal?
-Sa Samal View Resort, duna kitay duha ka Starlink Gen 3. Hunahunaa sila nga sama sa duha ka dagkong satellite dish nga nagtan-aw sa langit, naghulat nga makadawat og mga 'magic rays' gikan sa mga satellite nga naglutaw sa kawanangan. Kini nga mga ray paspas kaayo, morag kilat nga modagan para makaduwa ka og games nga walay putol-putol!
+## Ловушки для космических лучиков
+Знаешь, как домик узнает новости со всего света? На его крыше стоят две антенны Starlink. Представь, что это такие любопытные «тарелки-слушатели», которые ловят быстрые-быстрые лучики интернета прямо от спутников, летающих высоко в космосе, как волшебные светящиеся тарелочки. Они передают данные так быстро, что ты даже не успеешь моргнуть!
 
-## Kuryente gikan sa adlaw
-Kinsa may nagpaandar niining tanan? Ang atong mga solar panels! Hunahunaa sila nga mga 'dakop-sunlight' nga mga habol. Sa matag adlaw, ilang kuhaon ang mga init nga 'solar bunnies' (solar rays) gikan sa adlaw ug himoon kining kuryente para padaganon ang atong internet magic sa Davao.
+## Солнечные зайчики для работы
+А как же работают эти тарелки, если они далеко от города? У нашего Samal IT-Bunker есть секрет: вокруг стоят специальные панели. Это настоящие ловушки для солнечных зайчиков! Солнышко светит, зайчики прыгают в ловушки, и превращаются в энергию, которая помогает интернету работать целый день.
 
-## Paspas nga koneksyon
-Ang gikusgon niini kay 300 Mbps! Hunahunaa kini nga sama sa usa ka sakyanan nga lumba nga mas paspas pa sa kabayo. Tungod niini, bisan naa ka sa tunga sa isla, ang imong mga video ug leksyon mahuman dayon sa pag-load!
+## Отдых в Samal View Resort
+Этот чудесный домик находится совсем рядом с Samal View Resort. Это такое красивое место, где можно отдыхать, слушать море и знать, что даже в джунглях интернет такой быстрый, будто ты сидишь дома с любимыми игрушками!
